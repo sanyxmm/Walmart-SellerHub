@@ -89,11 +89,11 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[170px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[150px]">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="relative bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+            <div key={index} className="relative bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">{stat.title}</p>

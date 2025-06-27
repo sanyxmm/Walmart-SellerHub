@@ -51,7 +51,7 @@ function App() {
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab}  isOpen={isOpen} toggleOpen={() => setIsOpen(!isOpen)}/>
       <div className={`flex-1 p-6 transition-[margin] duration-300 ease-in-out
-                        ${isOpen ? 'md:ml-64' : 'md:ml-16'}`}>
+                        ${isOpen ? 'md:ml-44' : 'md:ml-12'}`}>
         {renderContent()}
       </div>
     </div>

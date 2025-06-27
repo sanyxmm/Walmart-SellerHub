@@ -204,7 +204,7 @@ export default function Analytics() {
           </div>
         </div>
       </div>
-      <div className="max-w-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[170px]">
+      <div className="max-w-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[150px]">
            {stats.map((stat, index) => {
              const Icon = stat.icon;
              return (
@@ -373,13 +373,15 @@ export default function Analytics() {
           ))}
         </div>
       <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center col-span-2">
-        <div className="bg-white p-4 rounded-xl shadow-sm">
-                   <p className="font-medium text-gray-800 mb-2">Purchases</p>
-                   <BarChart width={600} height={150} data={purchasesData}>
+      
+      <ResponsiveContainer aspect={2.5} >
+                   <BarChart width={500} height={200} data={purchasesData}>
                      <Bar dataKey="value" fill="#f59e0b" radius={[2, 2, 0, 0]} />
                    </BarChart>
-                 </div>
-      </div>
+                   <p className="font-medium text-gray-800  text-center">Purchases</p>
+           </ResponsiveContainer>
+  </div>
+                 
     </div>
   </div>
   );

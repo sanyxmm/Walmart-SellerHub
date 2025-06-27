@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Hide scrollbar — works in Chrome, Edge, Safari, Firefox */
+.no-scrollbar::-webkit-scrollbar { display: none; }   /* Chrome/Safari */
+.no-scrollbar { 
+  -ms-overflow-style: none;  /* IE & old Edge */
+  scrollbar-width: none;     /* Firefox */
+}
