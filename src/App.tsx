@@ -8,11 +8,14 @@ import OrderFulfillment from './components/OrderFulfillment';
 import OCRScanner from './components/OCRScanner';
 import PolarisOptimizer from './components/PolarisOptimizer';
 import Gamification from './components/Gamification';
+import { Login } from './components/Login';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isOpen,   setIsOpen]    = useState(true);   // start expanded
-
+const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  return localStorage.getItem('isLoggedIn') === 'true';
+});
 
   const renderContent = () => {
     switch (activeTab) {
@@ -46,10 +49,16 @@ function App() {
         return <Dashboard />;
     }
   };
-
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('isLoggedIn');
+  };
+  if (!isLoggedIn) {
+    return <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />;
+  }
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab}  isOpen={isOpen} toggleOpen={() => setIsOpen(!isOpen)}/>
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab}  isOpen={isOpen} toggleOpen={() => setIsOpen(!isOpen)}   handleLogout={handleLogout} />
       <div className={`flex-1 p-6 transition-[margin] duration-300 ease-in-out
                         ${isOpen ? 'md:ml-44' : 'md:ml-12'}`}>
         {renderContent()}

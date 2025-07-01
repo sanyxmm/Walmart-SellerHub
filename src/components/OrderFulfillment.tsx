@@ -14,6 +14,7 @@ import {
 import { mockOrders, mockDarkStores } from '../data/mockData';
 import { Order, DarkStore } from '../types';
 import IndianMap from './IndianMap';
+import LeafletMap from './LeafletMap';
 
 const OrderFulfillment: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -66,12 +67,12 @@ const OrderFulfillment: React.FC = () => {
       </div>
 
       {/* Indian Map with Dark Stores */}
-      <IndianMap 
+     <LeafletMap/>
+     {/* <IndianMap 
         darkStores={mockDarkStores}
         selectedStore={selectedStore}
         onStoreSelect={setSelectedStore}
-      />
-
+      /> */}
       {/* Orders Management */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
         <div className="p-6 border-b border-gray-200">

@@ -1,19 +1,20 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import { 
   TrendingUp, 
-  Package, 
+  Package,    
   ShoppingCart, 
   DollarSign,
   Users,
   AlertCircle,
   CheckCircle,
-  Clock
+  Clock,X,
 } from 'lucide-react';
 
 import { mockAnalytics, mockProducts, mockOrders } from '../data/mockData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const Dashboard: React.FC = () => {
+  const [showAllOrders, setShowAllOrders] = useState(false);
   const stats = [
     {
       title: "Total Revenue",
@@ -71,7 +72,7 @@ const Dashboard: React.FC = () => {
 
   const toChartData = arr => arr.map((v, i) => ({ x: i, y: v }));
 
-  const recentOrders = mockOrders.slice(0, 5);
+  const recentOrders = mockOrders.slice(0, 3);
 
   return (
     <div className="p-6 space-y-6">
@@ -127,7 +128,6 @@ const Dashboard: React.FC = () => {
           );
         })}
       </div>
-
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -159,12 +159,20 @@ const Dashboard: React.FC = () => {
 
       {/* Recent Orders */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
-          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">View all</button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+  <div className="flex items-center justify-between mb-4">
+    <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
+
+    {/* ‣ NEW onClick toggles the fullscreen overlay */}
+    <button
+      onClick={() => setShowAllOrders(true)}
+      className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+    >
+      View all
+    </button>
+  </div>
+
+  {/* existing mini‑table (still just 5 rows) */}
+  <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="text-left py-3 px-4 font-medium text-gray-700">Order ID</th>
@@ -199,8 +207,91 @@ const Dashboard: React.FC = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
+
+{/* ─────────────────── Full‑screen “All Orders” overlay ─────────────────── */}
+{showAllOrders && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl p-6 max-h-[88vh] overflow-scroll no-scrollbar h-full max-w-screen-lg w-full mx-4">
+    <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Order Details</h3>
+              <button
+                onClick={() => setShowAllOrders(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+    {/* full table ‑ use the complete mockOrders array */}
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        {/* table head (same as before) */}
+        <thead>
+          <tr className=" border-b border-gray-200">
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Order ID
+            </th>
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Product
+            </th>
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Customer
+            </th>
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Amount
+            </th>
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Status
+            </th>
+            <th className="text-left py-3 px-4 font-medium text-gray-700">
+              Date
+            </th>
+          </tr>
+        </thead>
+
+        {/* body now iterates over *all* orders */}
+        <tbody>
+          {mockOrders.map((order) => (
+            <tr key={order.id} className="border-b border-gray-100">
+              <td className="py-3 px-4 text-sm font-medium text-gray-900">
+                {order.id}
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-600">
+                {order.productName}
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-600">
+                {order.customerName}
+              </td>
+              <td className="py-3 px-4 text-sm font-medium text-gray-900">
+                ₹{order.amount.toLocaleString()}
+              </td>
+              <td className="py-3 px-4">
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    order.status === 'delivered'
+                      ? 'bg-green-100 text-green-800'
+                      : order.status === 'shipped'
+                      ? 'bg-blue-100 text-blue-800'
+                      : order.status === 'processing'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {order.status}
+                </span>
+              </td>
+              <td className="py-3 px-4 text-sm text-gray-600">
+                {new Date(order.orderDate).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+)}
+    </div>
     </div>
   );
 };

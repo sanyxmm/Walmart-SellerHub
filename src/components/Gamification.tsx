@@ -7,14 +7,12 @@ import {
   TrendingUp, 
   Package, 
   DollarSign,
-  Calendar,
   Gift,
   Crown,
   Zap,
   Medal
 } from 'lucide-react';
 import { mockAchievement, mockBadges } from '../data/mockData';
-
 const Gamification: React.FC = () => {
   const [selectedBadge, setSelectedBadge] = useState(null);
   

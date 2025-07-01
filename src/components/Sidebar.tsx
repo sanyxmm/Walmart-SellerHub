@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Home, Package, BarChart3, MessageSquare, MapPin,
-  Camera, Trophy, Settings, Zap
+  Camera, Trophy, Settings, Zap , LogOut,
 } from 'lucide-react';
 import '../index.css'
 interface SidebarProps {
@@ -9,6 +9,7 @@ interface SidebarProps {
   onTabChange: (tab: string) => void;
   isOpen: boolean;
   toggleOpen: () => void;
+  handleLogout :() => void;
 }
 
 const menuItems = [
@@ -24,7 +25,7 @@ const menuItems = [
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({
-  activeTab, onTabChange, isOpen, toggleOpen,
+  activeTab, onTabChange, isOpen, toggleOpen, handleLogout,   
 }) => (
   <aside className={`fixed h-screen border-r border-gray-200 bg-blue-700 p-2
                 transition-[width] duration-300 ease-in-out
@@ -49,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 
     {/* ---- Navigation ---- */}
-    <nav className="flex-1 overflow-y-auto p-1 no-scrollbar text-[0.8rem]">
+    <nav className="flex flex-col h-[100vh] justify-between overflow-y-auto p-1 no-scrollbar text-[0.8rem]">
       <ul className=" no-scrollbar">
         {menuItems.map(({ id, label, icon: Icon }) => (
           <li key={id}>
@@ -67,6 +68,19 @@ const Sidebar: React.FC<SidebarProps> = ({
 </button>
           </li>
         ))}
+      </ul>
+      <ul> 
+      <li >
+          <button
+  onClick={handleLogout}
+  className={`flex items-center w-full rounded-lg px-4 py-3
+              transition-colors duration-200 bg-blue-700 text-white border-[#FFC220]}
+              ${isOpen ? 'justify-start space-x-3' : 'justify-center'}`}
+>
+  <LogOut className="w-4 h-4 shrink-0 text-white" />
+  {isOpen && <span className="font-medium">Log Out</span>}
+</button>
+          </li>
       </ul>
     </nav>
   </aside>
