@@ -158,7 +158,7 @@ const stats = [
   {
     title: "Conversion Rate",
     value: `${mockAnalytics.marketing.conversionRate}%`,
-    change: "▲ 0.5% from last month",
+    change: "▲ 0.5%",
     icon: TrendingUp,
     color: "text-orange-600",
     bgColor: "bg-orange-50",
