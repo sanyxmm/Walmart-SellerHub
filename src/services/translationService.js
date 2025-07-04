@@ -1,6 +1,9 @@
 // Translation Service for multilingual support
-export class TranslationService {
-  private translations: { [key: string]: { [key: string]: string } } = {
+class TranslationService {
+  /* -------------------------------------------
+     master dictionary
+  ------------------------------------------- */
+  translations = {
     en: {
       dashboard: 'Dashboard',
       products: 'Products',
@@ -8,7 +11,7 @@ export class TranslationService {
       orders: 'Orders',
       chatbot: 'AI Assistant',
       settings: 'Settings',
-      welcome: 'Welcome back! Here\'s your business overview.',
+      welcome: "Welcome back! Here's your business overview.",
       totalRevenue: 'Total Revenue',
       totalOrders: 'Total Orders',
       activeProducts: 'Active Products',
@@ -21,7 +24,7 @@ export class TranslationService {
       processing: 'Processing...',
       darkStores: 'Dark Stores',
       deliveryTime: 'Delivery Time',
-      orderStatus: 'Order Status'
+      orderStatus: 'Order Status',
     },
     hi: {
       dashboard: 'डैशबोर्ड',
@@ -43,7 +46,7 @@ export class TranslationService {
       processing: 'प्रसंस्करण...',
       darkStores: 'डार्क स्टोर',
       deliveryTime: 'डिलीवरी समय',
-      orderStatus: 'ऑर्डर स्थिति'
+      orderStatus: 'ऑर्डर स्थिति',
     },
     bn: {
       dashboard: 'ড্যাশবোর্ড',
@@ -65,7 +68,7 @@ export class TranslationService {
       processing: 'প্রক্রিয়াকরণ...',
       darkStores: 'ডার্ক স্টোর',
       deliveryTime: 'ডেলিভারি সময়',
-      orderStatus: 'অর্ডার অবস্থা'
+      orderStatus: 'অর্ডার অবস্থা',
     },
     te: {
       dashboard: 'డాష్‌బోర్డ్',
@@ -74,7 +77,7 @@ export class TranslationService {
       orders: 'ఆర్డర్లు',
       chatbot: 'AI సహాయకుడు',
       settings: 'సెట్టింగ్‌లు',
-      welcome: 'తిరిగి రావడానికి స్వాగతం! ఇక్కడ మీ వ్యాపార అవలోకనం ఉంది।',
+      welcome: 'తిరిగి రావడానికి స్వాగతం! ఇక్కడ మీ వ్యాపార అవలోకనం ఉంది.',
       totalRevenue: 'మొత్తం ఆదాయం',
       totalOrders: 'మొత్తం ఆర్డర్లు',
       activeProducts: 'క్రియాశీల ఉత్పత్తులు',
@@ -87,7 +90,7 @@ export class TranslationService {
       processing: 'ప్రాసెసింగ్...',
       darkStores: 'డార్క్ స్టోర్లు',
       deliveryTime: 'డెలివరీ సమయం',
-      orderStatus: 'ఆర్డర్ స్థితి'
+      orderStatus: 'ఆర్డర్ స్థితి',
     },
     mr: {
       dashboard: 'डॅशबोर्ड',
@@ -109,7 +112,7 @@ export class TranslationService {
       processing: 'प्रक्रिया करत आहे...',
       darkStores: 'डार्क स्टोअर्स',
       deliveryTime: 'डिलिव्हरी वेळ',
-      orderStatus: 'ऑर्डर स्थिती'
+      orderStatus: 'ऑर्डर स्थिती',
     },
     ta: {
       dashboard: 'டாஷ்போர்டு',
@@ -131,7 +134,7 @@ export class TranslationService {
       processing: 'செயலாக்கம்...',
       darkStores: 'டார்க் ஸ்டோர்கள்',
       deliveryTime: 'டெலிவரி நேரம்',
-      orderStatus: 'ஆர்டர் நிலை'
+      orderStatus: 'ஆர்டர் நிலை',
     },
     gu: {
       dashboard: 'ડેશબોર્ડ',
@@ -153,19 +156,27 @@ export class TranslationService {
       processing: 'પ્રક્રિયા કરી રહ્યું છે...',
       darkStores: 'ડાર્ક સ્ટોર્સ',
       deliveryTime: 'ડિલિવરી સમય',
-      orderStatus: 'ઓર્ડર સ્થિતિ'
-    }
+      orderStatus: 'ઓર્ડર સ્થિતિ',
+    },
+    // add other languages (kn, ml, pa, or) below if needed ...
   };
 
-  translate(key: string, language: string = 'en'): string {
-    return this.translations[language]?.[key] || this.translations['en'][key] || key;
+  /* -------------------------------------------
+     basic helpers
+  ------------------------------------------- */
+  translate(key, lang = 'en') {
+    return (
+      this.translations[lang]?.[key] ||
+      this.translations.en[key] ||
+      key
+    );
   }
 
-  getCurrentLanguageTranslations(language: string = 'en'): { [key: string]: string } {
-    return this.translations[language] || this.translations['en'];
+  getCurrentLanguageTranslations(lang = 'en') {
+    return this.translations[lang] || this.translations.en;
   }
 
-  getSupportedLanguages(): Array<{ code: string; name: string; native: string }> {
+  getSupportedLanguages() {
     return [
       { code: 'en', name: 'English', native: 'English' },
       { code: 'hi', name: 'Hindi', native: 'हिंदी' },
@@ -177,9 +188,13 @@ export class TranslationService {
       { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
       { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
       { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
-      { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ' }
+      { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ' },
     ];
   }
 }
 
+/* -------------------------------------------
+   export singleton
+------------------------------------------- */
 export const translationService = new TranslationService();
+export default TranslationService;

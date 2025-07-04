@@ -158,7 +158,7 @@ const stats = [
   {
     title: "Conversion Rate",
     value: `${mockAnalytics.marketing.conversionRate}%`,
-    change: "▲ 0.5%",
+    change: "▲ 0.5% from last month",
     icon: TrendingUp,
     color: "text-orange-600",
     bgColor: "bg-orange-50",
@@ -204,7 +204,7 @@ export default function Analytics() {
           </div>
         </div>
       </div>
-      <div className="max-w-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[150px]">
+      <div className="max-w-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[170px]">
            {stats.map((stat, index) => {
              const Icon = stat.icon;
              return (
@@ -374,11 +374,11 @@ export default function Analytics() {
         </div>
       <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center col-span-2">
       
-      <ResponsiveContainer aspect={2.5} >
+      <ResponsiveContainer width="100%" aspect={2.5} >
                    <BarChart width={500} height={200} data={purchasesData}>
                      <Bar dataKey="value" fill="#f59e0b" radius={[2, 2, 0, 0]} />
                    </BarChart>
-                   <p className="font-medium text-gray-800  text-center">Purchases</p>
+                   <p className="font-medium text-gray-800  ">Purchases</p>
            </ResponsiveContainer>
   </div>
                  
