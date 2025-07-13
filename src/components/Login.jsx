@@ -38,6 +38,7 @@ export function Login({ isLoggedIn, setIsLoggedIn }) {
               type="email"
               id="email"
               value={user.email}
+              placeholder='test@gmail.com'
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               required
               autoFocus
@@ -53,6 +54,7 @@ export function Login({ isLoggedIn, setIsLoggedIn }) {
               id="password"
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
+              placeholder='test@123'
               required
             />
           </div>

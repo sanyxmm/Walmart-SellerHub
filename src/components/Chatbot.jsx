@@ -10,26 +10,33 @@ import {
   TrendingUp,
   Package,
   DollarSign,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
-import { translationService } from '../services/translationService';
-import { voiceService } from '../services/voiceService';
-import VoiceAssistant from './VoiceAssistant';
 
 /** ------------------------------------------------------------------
  * Chatbot component – plain JSX (no TypeScript)
  * ------------------------------------------------------------------ */
 const Chatbot = () => {
   /* ----------------------- State ----------------------- */
-    const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isTyping, setIsTyping] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [knowledgeBase, setKnowledgeBase] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [knowledgeBase, setKnowledgeBase] = useState([]);
+  const [showQuickActions, setShowQuickActions] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef(null);
 
-  const supportedLanguages = translationService.getSupportedLanguages();
+  const supportedLanguages = [
+    { code: 'en', native: 'English' },
+    { code: 'es', native: 'Español' },
+    { code: 'fr', native: 'Français' },
+    { code: 'de', native: 'Deutsch' },
+  ];
+
   const productData = [
     {
       category: "Electronics",
@@ -115,107 +122,108 @@ const Chatbot = () => {
 
   /* ----------------------- Effects ----------------------- */
   useEffect(() => {
-     setKnowledgeBase(productData);
-     setMessages([{
-       type: 'bot',
-       content: "Hello! I'm your e-commerce assistant. I can help you optimize product listings, improve rankings, and boost sales.\nWhat would you like to know?"
-     }]);
-   }, []);
- 
-   // Simple text similarity function
-   const calculateSimilarity = (text1, text2) => {
-     const words1 = text1.toLowerCase().split(/\s+/);
-     const words2 = text2.toLowerCase().split(/\s+/);
-     const intersection = words1.filter(word => words2.includes(word));
-     return intersection.length / Math.max(words1.length, words2.length);
-   };
- 
-   // RAG retrieval function
-   const retrieveRelevantInfo = (query) => {
-     const queryLower = query.toLowerCase();
-     
-     // Score each document based on relevance
-     const scoredDocs = knowledgeBase.map(doc => {
-       let score = 0;
-       
-       // Check for matches in different fields
-       if (doc.product.toLowerCase().includes(queryLower)) score += 3;
-       if (doc.category.toLowerCase().includes(queryLower)) score += 2;
-       if (doc.keywords.toLowerCase().includes(queryLower)) score += 2;
-       if (doc.title_optimization.toLowerCase().includes(queryLower)) score += 1;
-       if (doc.description.toLowerCase().includes(queryLower)) score += 1;
-       if (doc.ranking_tips.toLowerCase().includes(queryLower)) score += 2;
-       
-       // Calculate text similarity
-       const titleSim = calculateSimilarity(query, doc.title_optimization);
-       const descSim = calculateSimilarity(query, doc.description);
-       const tipsSim = calculateSimilarity(query, doc.ranking_tips);
-       
-       score += (titleSim + descSim + tipsSim) * 2;
-       
-       return { ...doc, score };
-     });
-     
-     // Return top 3 most relevant documents
-     return scoredDocs
-       .sort((a, b) => b.score - a.score)
-       .slice(0, 3)
-       .filter(doc => doc.score > 0);
-   };
- 
-   // Generate response using retrieved context
-   const generateResponse = async (query, context) => {
-     const queryLower = query.toLowerCase();
-     
-     // GEMINI API INTEGRATION
-     const API_KEY = 'AIzaSyBUSzxkEQy0D39Zlqn35c0OeKG6pDm_lOc';
-     
-     try {
-       const contextText = context.map(doc => 
-         `Product: ${doc.product}\nCategory: ${doc.category}\nKeywords: ${doc.keywords}\nOptimized Title: ${doc.title_optimization}\nDescription: ${doc.description}\nRanking Tips: ${doc.ranking_tips}\nPrice Strategy: ${doc.price_strategy}\nSEO Score: ${doc.seo_score}`
-       ).join('\n\n---\n\n');
-       
-       const prompt = `You are an expert Walmart Polaris optimizer consultant helping sellers optimize their product listings and enhance reatail Supply chain management. Based on the following context and user query, provide specific, actionable advice.
- 
- Context from knowledge base:
- ${contextText}
- 
- User Query: ${query}
+    setKnowledgeBase(productData);
+    setMessages([{
+      type: 'bot',
+      content: "Hello! I'm your e-commerce assistant. I can help you optimize product listings, improve rankings, and boost sales.\nWhat would you like to know?"
+    }]);
+  }, []);
+
+  // Simple text similarity function
+  const calculateSimilarity = (text1, text2) => {
+    const words1 = text1.toLowerCase().split(/\s+/);
+    const words2 = text2.toLowerCase().split(/\s+/);
+    const intersection = words1.filter(word => words2.includes(word));
+    return intersection.length / Math.max(words1.length, words2.length);
+  };
+
+  // RAG retrieval function
+  const retrieveRelevantInfo = (query) => {
+    const queryLower = query.toLowerCase();
+    
+    // Score each document based on relevance
+    const scoredDocs = knowledgeBase.map(doc => {
+      let score = 0;
+      
+      // Check for matches in different fields
+      if (doc.product.toLowerCase().includes(queryLower)) score += 3;
+      if (doc.category.toLowerCase().includes(queryLower)) score += 2;
+      if (doc.keywords.toLowerCase().includes(queryLower)) score += 2;
+      if (doc.title_optimization.toLowerCase().includes(queryLower)) score += 1;
+      if (doc.description.toLowerCase().includes(queryLower)) score += 1;
+      if (doc.ranking_tips.toLowerCase().includes(queryLower)) score += 2;
+      
+      // Calculate text similarity
+      const titleSim = calculateSimilarity(query, doc.title_optimization);
+      const descSim = calculateSimilarity(query, doc.description);
+      const tipsSim = calculateSimilarity(query, doc.ranking_tips);
+      
+      score += (titleSim + descSim + tipsSim) * 2;
+      
+      return { ...doc, score };
+    });
+    
+    // Return top 3 most relevant documents
+    return scoredDocs
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .filter(doc => doc.score > 0);
+  };
+
+  // Generate response using retrieved context
+  const generateResponse = async (query, context) => {
+    const queryLower = query.toLowerCase();
+    
+    // GEMINI API INTEGRATION
+    const API_KEY = 'AIzaSyBUSzxkEQy0D39Zlqn35c0OeKG6pDm_lOc';
+    
+    try {
+      const contextText = context.map(doc => 
+        `Product: ${doc.product}\nCategory: ${doc.category}\nKeywords: ${doc.keywords}\nOptimized Title: ${doc.title_optimization}\nDescription: ${doc.description}\nRanking Tips: ${doc.ranking_tips}\nPrice Strategy: ${doc.price_strategy}\nSEO Score: ${doc.seo_score}`
+      ).join('\n\n---\n\n');
+      
+      const prompt = `You are an expert Walmart Polaris optimizer consultant helping sellers optimize their product listings and enhance retail Supply chain management. Based on the following context and user query, provide specific, actionable advice.
+
+Context from knowledge base:
+${contextText}
+
+User Query: ${query}
+
  
  Please provide:
- 1. anwer in 500 words without any exaplin just look at the product about which user asked direclty give example improvement reagaring based on walmart polaris algorithm no explain needed 
+ 1. anwer in 200 words without any explain just look at the product about which seller asked diretly give example improvement reagaring based on walmart polaris algorithm no explain needed 
  
- Keep your response helpful, practical, and focused on improving sales, rankings and improving supply chain management.`;
- 
-       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify({
-           contents: [{
-             parts: [{
-               text: prompt
-             }]
-           }]
-         })
-       });
-       
-       if (!response.ok) {
-         throw new Error(`API request failed: ${response.status}`);
-       }
-       
-       const data = await response.json();
-       return data.candidates[0].content.parts[0].text;
-       
-     } catch (error) {
-       console.error('Gemini API Error:', error);
-       // Fallback to local response if API fails
-       return generateGeneralResponse(query, context);
-     }
-   };
+ Keep your response helpful, practical, and focused on improving sales, rankings and improving supply chain management ans add pointers and emojis for easy naivgation and answer within the context of what seller has asked.
+`;
 
-  
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }]
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.candidates[0].content.parts[0].text;
+      
+    } catch (error) {
+      console.error('Gemini API Error:', error);
+      // Fallback to local response if API fails
+      return generateGeneralResponse(query, context);
+    }
+  };
+
   const generateGeneralResponse = (query, context) => {
     const queryLower = query.toLowerCase();
     
@@ -287,33 +295,7 @@ const Chatbot = () => {
     
     return `Here are relevant keywords for your products:\n\n${keywords}\n\n**Keyword Strategy:**\n• Mix high-volume and niche keywords\n• Use synonyms and variations\n• Include brand and model names\n• Target customer problems and solutions`;
   };
-  // const handleSendMessage = (msg) => {
-  //   const message = msg.trim();
-  //   if (!message) return;
 
-  //   const userMessage = {
-  //     id: Date.now().toString(),
-  //     message,
-  //     type: 'user',
-  //     timestamp: new Date(),
-  //     language: selectedLanguage,
-  //   };
-
-  //   setMessages((prev) => [...prev, userMessage]);
-  //   setInputMessage('');
-  //   setIsTyping(true);
-
-  //   // Simulate AI response
-  //   setTimeout(() => {
-  //     const aiResponse = generateAIResponse(message);
-  //     setMessages((prev) => [...prev, aiResponse]);
-  //     setIsTyping(false);
-
-  //     if (isVoiceMode) {
-  //       voiceService.speakWithSarvam(aiResponse.message, selectedLanguage);
-  //     }
-  //   }, 1500);
-  // };
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
     
@@ -340,49 +322,15 @@ const Chatbot = () => {
       setIsLoading(false);
     }
   };
-  const generateAIResponse = (userMessage) => {
-    const lower = userMessage.toLowerCase();
-
-    let response = '';
-    let suggestions = [];
-
-    if (lower.includes('description') || lower.includes('optimize')) {
-      response = 'I can help optimize your product descriptions!';
-      suggestions = ['Review product copy', 'Add SEO tags'];
-    } else if (lower.includes('inventory')) {
-      response = 'Here’s your inventory overview.';
-      suggestions = ['Low stock alert', 'Order new stock'];
-    } else if (lower.includes('marketing')) {
-      response = 'Here are marketing strategies you can try.';
-      suggestions = ['Email campaign tips', 'Ad optimization'];
-    } else {
-      response = 'I can assist with product listings, sales insights, and more!';
-      suggestions = ['Optimize listings', 'Get sales insights'];
-    }
-
-    return {
-      id: Date.now().toString(),
-      message: response,
-      type: 'ai',
-      timestamp: new Date(),
-      suggestions,
-      language: selectedLanguage,
-    };
-  };
 
   const handleSuggestionClick = (suggestion) => {
-    handleSendMessage(suggestion);
-  };
-
-  const handleVoiceTranscript = (transcript) => {
-    setInputMessage(transcript);
-    setTimeout(() => handleSendMessage(transcript), 500);
+    setInputMessage(suggestion);
   };
 
   const quickActions = [
     {
       icon: Lightbulb,
-      title: translationService.translate('products', selectedLanguage),
+      title: 'Products',
       description: 'Get AI suggestions for better product listings',
       color: 'bg-yellow-50 text-yellow-600 border-yellow-200',
     },
@@ -413,7 +361,7 @@ const Chatbot = () => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
-            {translationService.translate('chatbot', selectedLanguage)}
+            E-commerce Assistant
           </h1>
           <p className="text-gray-600 mt-1">Your intelligent business companion</p>
         </div>
@@ -443,91 +391,134 @@ const Chatbot = () => {
         </div>
       </div>
 
-      {/* Voice Panel */}
-      {isVoiceMode && (
-        <div className="mb-6">
-          <VoiceAssistant
-            selectedLanguage={selectedLanguage}
-            onLanguageChange={setSelectedLanguage}
-            onTranscript={handleVoiceTranscript}
-            isActive={isVoiceMode}
-          />
-        </div>
-      )}
-
       {/* Quick Actions */}
       {messages.length === 1 && !isVoiceMode && (
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action, idx) => {
-              const Icon = action.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={handleSendMessage}
-                  className={`p-4 rounded-lg border-2 border-dashed transition-all duration-200 hover:border-solid hover:shadow-md ${action.color}`}
-                >
-                  <Icon className="w-6 h-6 mb-2" />
-                  <h4 className="font-semibold mb-1">{action.title}</h4>
-                  <p className="text-xs opacity-75">{action.description}</p>
-                </button>
-              );
-            })}
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+            <button
+              onClick={() => setShowQuickActions(!showQuickActions)}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              {showQuickActions ? 'Hide' : 'Show'}
+              {showQuickActions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
+          <div className={`transition-all duration-300 overflow-hidden ${
+            showQuickActions ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {quickActions.map((action, idx) => {
+                const Icon = action.icon;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleSuggestionClick(action.title)}
+                    className={`p-4 rounded-lg border-2 border-dashed transition-all duration-200 hover:border-solid hover:shadow-md ${action.color}`}
+                  >
+                    <Icon className="w-6 h-6 mb-2" />
+                    <h4 className="font-semibold mb-1">{action.title}</h4>
+                    <p className="text-xs opacity-75">{action.description}</p>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
 
       {/* Chat Window */}
-      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col">
+      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col min-h-0">
         
-              {/* Chat Messages */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-4 h-96 overflow-y-auto">
-                {messages.map((message, index) => (
-                  <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
-                    <div className={`inline-block p-3 rounded-lg max-w-xs md:max-w-md lg:max-w-lg ${
-                      message.type === 'user' 
-                        ? 'bg-blue-500 text-white' 
-                        : 'bg-white text-gray-800 border'
-                    }`}>
-                      
-                      <div className="whitespace-pre-wrap text-sm"><ReactMarkdown >
-          {message.content}
-        </ReactMarkdown>
-</div>
-                      </div>
-                  </div>
+        {/* Chat Messages */}
+        <div className="flex-1 bg-gray-50 rounded-t-lg p-4 overflow-y-auto min-h-0">
+          {messages.map((message, index) => (
+            <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
+              <div className={`inline-block p-3 rounded-lg max-w-xs md:max-w-md lg:max-w-lg ${
+                message.type === 'user' 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-white text-gray-800 border'
+              }`}>
+                
+                <div className="whitespace-pre-wrap text-sm">
+                  <ReactMarkdown>
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="text-left mb-4">
+              <div className="inline-block p-3 bg-white border rounded-lg">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  Analyzing your question...
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Fixed Bottom Input Area */}
+        <div className="sticky bottom-0 bg-white border-t border-gray-100 rounded-b-lg">
+          {/* Suggestions */}
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-medium text-gray-700">Quick optimization questions:</h4>
+              <button
+                onClick={() => setShowSuggestions(!showSuggestions)}
+                className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                {showSuggestions ? 'Hide' : 'Show'}
+                {showSuggestions ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            </div>
+            <div className={`transition-all duration-300 overflow-hidden ${
+              showSuggestions ? 'max-h-32 opacity-100 mb-3' : 'max-h-0 opacity-0 mb-0'
+            }`}>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Optimize my product title",
+                  "Improve product description", 
+                  "Help with keyword research",
+                  "Check pricing strategy",
+                  "Boost product ranking",
+                  "SEO optimization tips",
+                  "Analyze competition",
+                  "Inventory management tips"
+                ].map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full border border-gray-200 transition-colors duration-200 hover:border-gray-300"
+                  >
+                    {suggestion}
+                  </button>
                 ))}
-                {isLoading && (
-                  <div className="text-left mb-4">
-                    <div className="inline-block p-3 bg-white border rounded-lg">
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        Analyzing your question...
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
-        
-              {/* Input Area */}
-              <div className="sticky bottom-4  flex gap-3">
-                <input
-                  type="text"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Ask about product optimization, ranking strategies, or pricing..."
-                  className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={isLoading || !inputMessage.trim()}
-                  className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
+            </div>
+            
+            {/* Input Area */}
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder="Ask about product optimization, ranking strategies, or pricing..."
+                className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={isLoading || !inputMessage.trim()}
+                className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

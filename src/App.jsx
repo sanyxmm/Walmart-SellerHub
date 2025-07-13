@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Products from './components/Products';
-import Analytics from './components/Analytics';
+import Analytics from './pages/Analytics';
 import Chatbot from './components/Chatbot';
 import OrderFulfillment from './components/OrderFulfillment';
 import OCRScanner from './components/OCRScanner';
@@ -25,7 +25,7 @@ const App = () => {
       case 'products':
         return <Products />;
       case 'analytics':
-        return <Analytics />;
+        return <Analytics/>;
       case 'chatbot':
         return <Chatbot />;
       case 'orders':
