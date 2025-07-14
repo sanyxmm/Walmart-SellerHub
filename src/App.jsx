@@ -8,6 +8,8 @@ import OrderFulfillment from './components/OrderFulfillment';
 import OCRScanner from './components/OCRScanner';
 import PolarisOptimizer from './components/PolarisOptimizer';
 import Gamification from './components/Gamification';
+import StreamlitApp from './components/StreamlitApp';
+
 import { Login } from './components/Login';
 
 const App = () => {
@@ -36,6 +38,8 @@ const App = () => {
         return <PolarisOptimizer />;
       case 'gamification':
         return <Gamification />;
+        case 'StreamlitApp':
+        return <StreamlitApp/>;
       case 'settings':
         return (
           <div className="p-6">
@@ -47,7 +51,7 @@ const App = () => {
           </div>
         );
       default:
-        return <Dashboard />;
+        return <StreamlitApp/>;
     }
   };
 

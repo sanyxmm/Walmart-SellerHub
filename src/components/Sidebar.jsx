@@ -10,9 +10,13 @@ import {
   Settings,
   Zap,
   LogOut,
+  Eye ,
 } from 'lucide-react';
 import '../index.css';
-
+const handleRedirect = () => {
+  window.open('https://polarisoptimizer.streamlit.app', '_blank'); // opens in new tab
+  // OR use `window.location.href = '...'` to open in same tab
+};
 /* --- Menu config --- */
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home },
@@ -20,10 +24,8 @@ const menuItems = [
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'orders', label: 'Order Fulfillment', icon: MapPin },
   { id: 'chatbot', label: 'AI Assistant', icon: MessageSquare },
+    // { id: 'gamification', label: 'Achievements', icon: Trophy },
   // { id: 'ocr', label: 'Receipt Scanner', icon: Camera },
-  { id: 'optimizer', label: 'Polaris Optimizer', icon: Zap },
-  // { id: 'gamification', label: 'Achievements', icon: Trophy },
-  // { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
 /* --- Sidebar component (pure JSX) --- */
@@ -83,6 +85,15 @@ const Sidebar = ({
             </button>
           </li>
         ))}
+         <button
+  onClick={handleRedirect}
+  className={`flex items-center w-full rounded-lg px-4 py-3 transition-colors duration-200
+    bg-blue-700 text-white border-[#FFC220]
+    ${isOpen ? 'justify-start space-x-3' : 'justify-center'}`}
+>
+<Eye className="w-4 h-4 shrink-0 text-white" />
+    &emsp;Product Visibility
+</button>
       </ul>
 
       {/* ---- Log‑out ---- */}
