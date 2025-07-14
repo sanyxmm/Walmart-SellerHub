@@ -12,7 +12,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import truck from './truck.png'
 // Fix Leaflet icon paths
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -20,6 +20,11 @@ L.Icon.Default.mergeOptions({
     "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+});
+const truckImage = new L.Icon({
+  iconUrl: truck, // Place your truck image in public folder
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
 });
 
 const warehouses = [
@@ -217,7 +222,7 @@ export default function LeafletMap() {
         )}
 
         {routePath.length > 0 && truckIndex < routePath.length && (
-          <Marker position={routePath[truckIndex]}>
+          <Marker position={routePath[truckIndex]} icon={truckImage}>
             <Popup>🚚 On the way</Popup>
           </Marker>
         )}
