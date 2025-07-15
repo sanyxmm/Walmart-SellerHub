@@ -92,7 +92,7 @@ const Sidebar = ({
     ${isOpen ? 'justify-start space-x-3' : 'justify-center'}`}
 >
 <Eye className="w-4 h-4 shrink-0 text-white" />
-    &emsp;Product Visibility
+       {isOpen && <span className="font-medium">Product Visibility</span>}
 </button>
       </ul>
 
