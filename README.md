@@ -66,13 +66,20 @@ Integrated Gemini-powered assistant to help sellers:
 
 ---
 
-## 🧩 Features Summary
+##  🏅 Sparkathon Value Proposition
 
-- 📱 Responsive UI  
 - 📈 Sample-based data for dashboard & analytics  
 - 🗺️ Interactive map for delivery tracking  
-- 🤖 AI tools for content optimization  
-- 🔍 ML model for product visibility scoring  
+- 🧠 AI Assistant for boosting product content
+- 🔍 ML predictions for product visibility
+- ⚛️ Modular React architecture for scalability
+
+
+
+
+
+
+
 
 ---
 
