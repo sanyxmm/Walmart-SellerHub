@@ -2,6 +2,10 @@
 
 **Walmart SellerHub** is a prototype **seller dashboard and analytics platform** built for the **Walmart Sparkathon**, aimed at enhancing **retail supply chain visibility** and **seller operations** through AI-driven insights, product optimization tools, and visibility predictions.
 
+🎥 **[Demo Video](https://youtu.be/wPLDmEx6Nto)**  
+📊 **[Pitch Deck / PPT (Canva)](https://www.canva.com/design/DAGtEVUBwbk/YgmWQxJnKoy92sbpKw-lfQ/edit)**  
+🌐 **[Live Demo (Deployed Link)](https://walmart-sellerhub.vercel.app/)**
+
 ---
 
 ## 🏆 Walmart Sparkathon Project
