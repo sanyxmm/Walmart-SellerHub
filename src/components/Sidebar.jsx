@@ -15,17 +15,13 @@ import {
 import '../index.css';
 const handleRedirect = () => {
   window.open('https://polarisoptimizer.streamlit.app', '_blank'); // opens in new tab
-  // OR use `window.location.href = '...'` to open in same tab
 };
 /* --- Menu config --- */
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home },
-  // { id: 'products',  label: 'Products',  icon: Package },
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'orders', label: 'Order Fulfillment', icon: MapPin },
   { id: 'chatbot', label: 'AI Assistant', icon: MessageSquare },
-    // { id: 'gamification', label: 'Achievements', icon: Trophy },
-  // { id: 'ocr', label: 'Receipt Scanner', icon: Camera },
 ];
 
 /* --- Sidebar component (pure JSX) --- */

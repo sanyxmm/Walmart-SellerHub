@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
-import Products from './components/Products';
 import Analytics from './pages/Analytics';
 import Chatbot from './components/Chatbot';
 import OrderFulfillment from './components/OrderFulfillment';
-import OCRScanner from './components/OCRScanner';
-import PolarisOptimizer from './components/PolarisOptimizer';
-import Gamification from './components/Gamification';
 import StreamlitApp from './components/StreamlitApp';
 
 import { Login } from './components/Login';
@@ -24,20 +20,12 @@ const App = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard />;
-      case 'products':
-        return <Products />;
       case 'analytics':
         return <Analytics/>;
       case 'chatbot':
         return <Chatbot />;
       case 'orders':
         return <OrderFulfillment />;
-      case 'ocr':
-        return <OCRScanner />;
-      case 'optimizer':
-        return <PolarisOptimizer />;
-      case 'gamification':
-        return <Gamification />;
         case 'StreamlitApp':
         return <StreamlitApp/>;
       case 'settings':
