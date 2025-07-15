@@ -1,112 +1,80 @@
-Walmart SellerHub 🛒
-A comprehensive seller dashboard and analytics platform built for the Walmart Sparkathon, aimed at enhancing retail supply chain visibility and seller operations. This React-based application showcases key business metrics, AI-powered assistance, and product visibility prediction through a prototype experience.
+# 🛒 Walmart SellerHub
 
-🏆 Walmart Sparkathon Project
-Developed as part of the Walmart Sparkathon competition, this project proposes innovative solutions to optimize seller efficiency, product visibility, and supply chain insights using AI and data-driven approaches.
+**Walmart SellerHub** is a prototype **seller dashboard and analytics platform** built for the **Walmart Sparkathon**, aimed at enhancing **retail supply chain visibility** and **seller operations** through AI-driven insights, product optimization tools, and visibility predictions.
 
-✨ Features
-📊 Dashboard & Analytics (Prototype View)
-A visually rich dashboard showcasing key seller metrics like revenue, orders, and performance trends using sample (hardcoded) data to demonstrate UI/UX flow and business insights effectively.
+---
 
-🗺️ Order Fulfillment
-Delivery Map: Interactive Leaflet map showing simulated delivery locations
+## 🏆 Walmart Sparkathon Project
 
-Warehouse Logic: Nearest warehouse detection (e.g., Noida) using sample calculations
+Developed as a submission for **Walmart Sparkathon 2025**, this project introduces innovative solutions to improve seller productivity, listing performance, and order fulfillment using **AI**, **data visualization**, and **ML models**.
 
-Route Optimization: Distance, ETA, and delivery charge (sample calculation: ₹163 for 31.57 km)
+---
 
-🤖 AI Assistant (Gemini API Integration)
-AI-powered assistant for:
+## ✨ Features
 
-Product title & description optimization
+### 📊 Dashboard & Analytics (Prototype)
 
-Keyword suggestions & SEO tips
+- Interactive dashboard with simulated key metrics: **revenue, orders, and trends**
+- Built using **hardcoded sample data** to demonstrate **UI/UX flow** and potential business insights
 
-Sales strategy & competitor analysis
+---
 
-Voice Input: Voice-enabled chatbot mode
+### 🗺️ Order Fulfillment
 
-Language Support: Multilingual response generation
+- **Delivery Map**: Leaflet-based simulated delivery locations
+- **Warehouse Logic**: Detects nearest warehouse (e.g., Noida) using basic geo-calculations
+- **Route Optimization**:
+  - Shows estimated distance, delivery time, and charges  
+  - _Example: ₹163 for 31.57 km_
 
-🔍 Product Visibility Predictor (Python ML Model)
-Random Forest Model to predict listing visibility
+---
 
-Input fields include:
+### 🤖 AI Assistant (Gemini API)
 
-Title, price stability, stock status
+Integrated Gemini-powered assistant to help sellers:
 
-Customer and seller pincodes
+- Optimize **product titles** and **descriptions**
+- Generate **keywords** and **SEO strategies**
+- Analyze **competitors** and **sales strategy**
+- **Voice input** support and **multilingual** output
 
-Returns a visibility score with Polaris-inspired ranking logic
+---
 
-🛠️ Tech Stack
-Frontend
-React.js, JavaScript (ES6+), CSS3
+### 🔍 Product Visibility Predictor (Python ML)
 
-Chart.js / Recharts for visualizations
+- Uses a **Random Forest** model to predict listing visibility
+- Input: title, price stability, stock status, pincodes, etc.
+- Output: **visibility score** based on Polaris-like logic
 
-Leaflet / OpenStreetMap for maps
+---
 
-Backend / AI
-Gemini API for AI Assistant
+## 🛠️ Tech Stack
 
-Python (Flask/FastAPI) for ML endpoint
+### Frontend
+- React.js, JavaScript (ES6+), CSS3
+- Chart.js / Recharts (visualizations)
+- Leaflet / OpenStreetMap (maps)
 
-Random Forest model for visibility prediction
+### Backend & AI
+- Gemini API (AI assistant)
+- Python (Flask/FastAPI) for ML endpoint
+- Trained Random Forest model for visibility predictions
 
-Features
-Responsive UI
+---
 
-Sample-based analytics and metrics
+## 🧩 Features Summary
 
-Interactive maps and charts
+- 📱 Responsive UI  
+- 📈 Sample-based data for dashboard & analytics  
+- 🗺️ Interactive map for delivery tracking  
+- 🤖 AI tools for content optimization  
+- 🔍 ML model for product visibility scoring  
 
-🚀 Getting Started
-bash
-Copy
-Edit
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+```bash
 git clone https://github.com/sanyxmm/Walmart-SellerHub.git
 cd Walmart-SellerHub
-npm install
-npm start
-Create a .env file:
-
-env
-Copy
-Edit
-REACT_APP_GEMINI_API_KEY=your_key_here
-REACT_APP_ML_MODEL_ENDPOINT=http://localhost:5000/predict
-📁 Project Structure
-bash
-Copy
-Edit
-walmart-sellerhub/
-├── src/components/
-│   ├── Dashboard/
-│   ├── Analytics/
-│   ├── OrderFulfillment/
-│   ├── AIAssistant/
-│   └── ProductVisibility/
-├── python-ml-model/
-│   ├── visibility_predictor.py
-│   └── random_forest_model.pkl
-└── .env
-🔮 Future Enhancements
-Live backend for real-time analytics and order tracking
-
-Integration with Walmart Seller APIs
-
-Advanced ML models for forecasting & trend detection
-
-Deeper NLP capabilities in AI assistant
-
-🏅 Sparkathon Value Proposition
-AI Integration for product optimization
-
-ML-based predictions to boost product visibility
-
-Interactive prototype for visualizing seller workflow improvements
-
-Modular React architecture for scalability
-
-Built with ❤️ for Walmart Sparkathon – Reimagining Retail Efficiency with AI & Analytics
