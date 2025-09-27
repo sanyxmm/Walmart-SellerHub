@@ -190,11 +190,7 @@ ${contextText}
 User Query: ${query}
 
  
- Please provide:
- 1. anwer in 200 words without any explain just look at the product about which seller asked diretly give example improvement reagaring based on walmart polaris algorithm no explain needed 
- 
- Keep your response helpful, practical, and focused on improving sales, rankings and improving supply chain management ans add pointers and emojis for easy naivgation and answer within the context of what seller has asked.
-`;
+ Please provide: anwer in maximum 200 words just look at the product in knowledge base productdata about which seller asked and then directly give improvement reagarding it based on walmart polaris algorithm `;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
         method: 'POST',
